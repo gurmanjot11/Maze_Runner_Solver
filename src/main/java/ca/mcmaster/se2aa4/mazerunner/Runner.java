@@ -100,7 +100,22 @@ public class Runner {
         logger.info("Left Square Valid? : "+ isLeftValid());
         logger.info("Right Square Valid? : "+ isRightValid());
         logger.info("FWD Square Valid? : "+ isForwardValid());
+        rotateRunnerLeft();
+        logger.info("--Rotating Left");
+        logger.info("Right Square Valid? : "+ isRightValid());
+        logger.info("FWD Square Valid? : "+ isForwardValid());
+        rotateRunnerRight();
+        logger.info("--Rotating Right");
+        logger.info("Right Square Valid? : "+ isRightValid());
+        logger.info("FWD Square Valid? : "+ isForwardValid());
         return "No path yet";
+    }
+
+    private void rotateRunnerLeft(){
+        this.current_direction=(this.current_direction-1)%4;
+    }
+    private void rotateRunnerRight(){
+        this.current_direction=(this.current_direction+1)%4;
     }
 }
 
