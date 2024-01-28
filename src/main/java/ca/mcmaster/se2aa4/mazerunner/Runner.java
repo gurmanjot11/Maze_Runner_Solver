@@ -159,14 +159,14 @@ public class Runner {
         }
     }
 
-    public String solveMaze(){
+    public Path solveMaze(){
         String path="";
         startSearch();
         while (!(position[0]==east_entry[0] & position[1]==east_entry[1])) {
             path+=move();
         }
         logger.info("Final position: [" + this.position[0]+"," +this.position[1]+"]");
-        return path;
+        return new Path(path);
     }
 }
 
