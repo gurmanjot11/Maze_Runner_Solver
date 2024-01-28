@@ -55,12 +55,19 @@ public class Runner {
 
     private boolean isLeftValid(){
         //true if square 1 to the left is " ", else false
-        int relative_left_direction = (current_direction-1)%4;
+        //modulo was yielding incorrect result for boundary cases like current_direction=0
+        int relative_left_direction = (current_direction-1);
+        if (relative_left_direction<0){
+            relative_left_direction+=4;
+        }
         return checkSquare(relative_left_direction);
     }
     private boolean isRightValid(){
         //true if square 1 to the right is " ", else false
-        int relative_right_direction = (current_direction+1)%4;
+        int relative_right_direction = (current_direction+1);
+        if (relative_right_direction>3){
+            relative_right_direction-=4;
+        }
         return checkSquare(relative_right_direction);
     }
     private boolean isForwardValid(){
@@ -73,16 +80,16 @@ public class Runner {
         try {
             switch (direction) {
                 case 0:
-                    valid = maze[position[0]][position[1]-1].equals(" ");
+                    valid = maze[position[1]-1][position[0]].equals(" ");
                     break;
                 case 1:
-                    valid = maze[position[0]+1][position[1]].equals(" ");
+                    valid = maze[position[1]][position[0]+1].equals(" ");
                     break;
                 case 2:
-                    valid = maze[position[0]][position[1]+1].equals(" ");
+                    valid = maze[position[1]+1][position[0]].equals(" ");
                     break;
                 case 3:
-                    valid = maze[position[0]-1][position[1]].equals(" ");   
+                    valid = maze[position[1]][position[0]-1].equals(" ");   
                     break;             
                 default:
                     return false;
@@ -94,10 +101,16 @@ public class Runner {
     }
     
     private void rotateRunnerLeft(){
-        this.current_direction=(this.current_direction-1)%4;
+        this.current_direction=(this.current_direction-1);
+        if (this.current_direction<0){
+            this.current_direction+=4;
+        }
     }
     private void rotateRunnerRight(){
-        this.current_direction=(this.current_direction+1)%4;
+        this.current_direction=(this.current_direction+1);
+        if (this.current_direction>3){
+            this.current_direction-=4;
+        }
     }
     private void moveForward(){
         //no validation because contract is that a valid movement has been decided by helper methods
@@ -122,28 +135,79 @@ public class Runner {
         }
         return;
     }
+    
+    public String move(){
+        //method will make 1 move to get closer to solving the maze
+        if (isRightValid()) {
+            rotateRunnerRight();
+            moveForward();
+            return " R F";
+        }
+        else if (isForwardValid()){
+            moveForward();
+            return "F";
+        }
+        else if (isLeftValid()){
+            rotateRunnerLeft();
+            moveForward();
+            return " L F";
+        }
+        else{
+            rotateRunnerLeft();
+            return " L";
+        }
+    }
 
     public String solveMaze(){
         startSearch();
-        logger.info("Initial FWD direction: "+ this.current_direction);
         logger.info("Initial pos: ["+ this.position[0]+","+this.position[1]);
-        logger.info("Moving FWD");
-        moveForward();
-        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
-        rotateRunnerRight();
-        logger.info("New FWD direction: "+ this.current_direction);
-        moveForward();
-        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
-        rotateRunnerRight();
-        logger.info("New FWD direction: "+ this.current_direction);
-        moveForward();
-        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
-        rotateRunnerRight();
-        logger.info("New FWD direction: "+ this.current_direction);
-        moveForward();
-        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
-        rotateRunnerRight();
-        logger.info("New FWD direction: "+ this.current_direction);
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isLeftValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        logger.info(move());
+        logger.info("--New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        logger.info("----Direction: "+this.current_direction + isRightValid()+isForwardValid()+isRightValid());
+        // startSearch();
+        // logger.info("Initial FWD direction: "+ this.current_direction);
+        // logger.info("Initial pos: ["+ this.position[0]+","+this.position[1]);
+        // logger.info("Moving FWD");
+        // moveForward();
+        // logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        // rotateRunnerRight();
+        // logger.info("New FWD direction: "+ this.current_direction);
+        // moveForward();
+        // logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        // rotateRunnerRight();
+        // logger.info("New FWD direction: "+ this.current_direction);
+        // moveForward();
+        // logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        // rotateRunnerRight();
+        // logger.info("New FWD direction: "+ this.current_direction);
+        // moveForward();
+        // logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        // rotateRunnerRight();
+        // logger.info("New FWD direction: "+ this.current_direction);
         // logger.info("Left Square Valid? : "+ isLeftValid());
         // logger.info("Right Square Valid? : "+ isRightValid());
         // logger.info("FWD Square Valid? : "+ isForwardValid());
