@@ -48,8 +48,8 @@ public class Main {
             Congifuration config = configure(args);
             MazeConvertor maze_convertor = new MazeConvertor(config.maze_filepath);
             try {
-                Maze maze = new Maze(maze_convertor.convertToArray());
-                String path = maze.solveMaze();
+                Runner runner = new Runner(maze_convertor.convertToArray());
+                String path = runner.solveMaze();
                 System.out.println("Path: "+ path);
             } catch (IOException ioe) {
                 logger.error("/!\\ Error Reading File /!\\");
