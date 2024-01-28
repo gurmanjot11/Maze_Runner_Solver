@@ -15,10 +15,12 @@ import org.apache.commons.cli.*;
 
 public class Runner {
     private static final Logger logger = LogManager.getLogger();
+    
     /** In this iteration, we will assume the maze entry is the west side and exit is the east */
+    
     String[][] maze;
     int[] position=new int[2]; //will store coords as (x,y) w/ x increasing as it goes to the east, y as it goes south
-    int fwd_direction=1; //Assume directions: 0=north, 1=east, 2=south,3-west
+    int current_direction=1; //Assume directions: 0=north, 1=east, 2=south,3-west
     int[] east_entry;
     int[] west_entry;
 
@@ -51,10 +53,53 @@ public class Runner {
         logger.info("Starting Position: ["+ this.position[0]+"," +this.position[1]+"]");
     }
 
+    private boolean isLeftValid(){
+        //true if square 1 to the left is " ", else false
+        int relative_left_direction = (current_direction-1)%4;
+        return checkSquare(relative_left_direction);
+    }
+    private boolean isRightValid(){
+        //true if square 1 to the right is " ", else false
+        int relative_right_direction = (current_direction+1)%4;
+        return checkSquare(relative_right_direction);
+    }
+    private boolean isForwardValid(){
+        //true if square 1 fwd left is " ", else false
+        return checkSquare(current_direction);
+    }
+
+    private boolean checkSquare(int direction){
+        boolean valid;
+        try {
+            switch (direction) {
+                case 0:
+                    valid = maze[position[0]][position[1]-1].equals(" ");
+                    break;
+                case 1:
+                    valid = maze[position[0]+1][position[1]].equals(" ");
+                    break;
+                case 2:
+                    valid = maze[position[0]][position[1]+1].equals(" ");
+                    break;
+                case 3:
+                    valid = maze[position[0]-1][position[1]].equals(" ");   
+                    break;             
+                default:
+                    return false;
+            }
+            return valid;
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+            return false;
+        }
+         
+    }
+
     public String solveMaze(){
         startSearch();
-        printEntries();
-        printPosition();
+        logger.info("Initial FWD direction: "+ this.current_direction);
+        logger.info("Left Square Valid? : "+ isLeftValid());
+        logger.info("Right Square Valid? : "+ isRightValid());
+        logger.info("FWD Square Valid? : "+ isForwardValid());
         return "No path yet";
     }
 }
