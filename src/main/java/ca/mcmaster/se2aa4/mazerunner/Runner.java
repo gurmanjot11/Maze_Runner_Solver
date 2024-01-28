@@ -91,31 +91,71 @@ public class Runner {
         } catch (ArrayIndexOutOfBoundsException aioobe) {
             return false;
         }
-         
     }
-
-    public String solveMaze(){
-        startSearch();
-        logger.info("Initial FWD direction: "+ this.current_direction);
-        logger.info("Left Square Valid? : "+ isLeftValid());
-        logger.info("Right Square Valid? : "+ isRightValid());
-        logger.info("FWD Square Valid? : "+ isForwardValid());
-        rotateRunnerLeft();
-        logger.info("--Rotating Left");
-        logger.info("Right Square Valid? : "+ isRightValid());
-        logger.info("FWD Square Valid? : "+ isForwardValid());
-        rotateRunnerRight();
-        logger.info("--Rotating Right");
-        logger.info("Right Square Valid? : "+ isRightValid());
-        logger.info("FWD Square Valid? : "+ isForwardValid());
-        return "No path yet";
-    }
-
+    
     private void rotateRunnerLeft(){
         this.current_direction=(this.current_direction-1)%4;
     }
     private void rotateRunnerRight(){
         this.current_direction=(this.current_direction+1)%4;
+    }
+    private void moveForward(){
+        //no validation because contract is that a valid movement has been decided by helper methods
+        switch (current_direction) {
+            case 0:
+                position=new int[]{position[0],position[1]-1};
+                break;
+            case 1:
+                position=new int[]{position[0]+1,position[1]};
+                break;
+            case 2:
+                position=new int[]{position[0],position[1]+1};
+                break;
+            case 3:
+                position=new int[]{position[0]-1,position[1]};
+                break;             
+            default:
+                logger.error("/!\\ Error moving the runner  /!\\");
+                logger.error("/!\\ Terminating the Program  /!\\");
+                System.exit(1);
+                break;
+        }
+        return;
+    }
+
+    public String solveMaze(){
+        startSearch();
+        logger.info("Initial FWD direction: "+ this.current_direction);
+        logger.info("Initial pos: ["+ this.position[0]+","+this.position[1]);
+        logger.info("Moving FWD");
+        moveForward();
+        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        rotateRunnerRight();
+        logger.info("New FWD direction: "+ this.current_direction);
+        moveForward();
+        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        rotateRunnerRight();
+        logger.info("New FWD direction: "+ this.current_direction);
+        moveForward();
+        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        rotateRunnerRight();
+        logger.info("New FWD direction: "+ this.current_direction);
+        moveForward();
+        logger.info("New pos: ["+ this.position[0]+","+this.position[1]+"\n");
+        rotateRunnerRight();
+        logger.info("New FWD direction: "+ this.current_direction);
+        // logger.info("Left Square Valid? : "+ isLeftValid());
+        // logger.info("Right Square Valid? : "+ isRightValid());
+        // logger.info("FWD Square Valid? : "+ isForwardValid());
+        // rotateRunnerLeft();
+        // logger.info("--Rotating Left");
+        // logger.info("Right Square Valid? : "+ isRightValid());
+        // logger.info("FWD Square Valid? : "+ isForwardValid());
+        // rotateRunnerRight();
+        // logger.info("--Rotating Right");
+        // logger.info("Right Square Valid? : "+ isRightValid());
+        // logger.info("FWD Square Valid? : "+ isForwardValid());
+        return "No path yet";
     }
 }
 
