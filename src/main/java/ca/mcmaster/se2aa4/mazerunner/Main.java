@@ -49,8 +49,8 @@ public class Main {
             MazeConvertor maze_convertor = new MazeConvertor(config.maze_filepath);
             try {
                 Runner runner = new Runner(maze_convertor.convertToArray());
-                String path = runner.solveMaze();
-                System.out.println("Path: "+ path);
+                Path path = runner.solveMaze();
+                System.out.println("Path: "+ path.getFactorizedPath());
             } catch (IOException ioe) {
                 logger.error("/!\\ Error Reading File /!\\");
                 logger.error("/!\\ Terminating Program /!\\");
