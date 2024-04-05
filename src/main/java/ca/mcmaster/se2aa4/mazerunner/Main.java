@@ -51,56 +51,18 @@ public class Main {
                 Runner runner = new Runner(maze_convertor.convertToArray());
                 Path path = runner.solveMaze();
                 System.out.println("Path: "+ path.getFactorizedPath());
+                Maze m=new Maze(config.maze_filepath);
+                m.printMaze();
             } catch (IOException ioe) {
                 logger.error("/!\\ Error Reading File /!\\");
                 logger.error("/!\\ Terminating Program /!\\");
                 System.exit(1);
             }
-            
-
         }
         catch(ParseException pe){
             logger.error("/!\\ An error parsing the CLI inputs has occured  /!\\");
             System.exit(1);
         }
-
-
-        // logger.info("** Starting Maze Runner");
-        // try {
-        //     logger.info("**** Reading the maze from file " + maze_filename);
-        //     BufferedReader reader = new BufferedReader(new FileReader(maze_filename));
-        //     String line;
-        //     while ((line = reader.readLine()) != null) {
-        //         /** CONTAIN THE ENTIRE MAZE INTO A 2D ARRAY */
-
-        //         for (int idx = 0; idx < line.length(); idx++) {
-        //             if (line.charAt(idx) == '#') {
-        //                 logger.info("WALL ");
-        //             } else if (line.charAt(idx) == ' ') {
-        //                 logger.info("PASS ");
-        //             }
-        //         }
-        //         logger.info(System.lineSeparator());
-        //     }
-        //     /** DETERMINE EAST AND WEST ENTRY SQUARES */
-
-        //     /**  VERIFY PATH FUNCTION (IF -p FLAG)*/
-        //     /** GENERATE PATH FUNCTION IF NO -p FLAG */
-        // } catch(Exception e) {
-        //      logger.error("/!\\ An error has occured /!\\");
-        // }
-        // logger.info("**** Computing path");
-        // logger.info("PATH NOT COMPUTED");
-        // logger.info("** End of MazeRunner");
-
     }
 }
 
-/**
- * GENERAL BRAINSTORM FOR WALKING SKELETON
- * 
- *  Methods:
- *   - function to check validity of moving to left/right/fwd space
- *   - function to move runner fwd
- *   - function to find start/end squares
- */

@@ -26,7 +26,7 @@ public class MazeConvertor {
         logger.info("Beginning conversion of maze file to a valid maze");
         String maze_pattern="";
         BufferedReader reader = new BufferedReader(new FileReader(filepath));
-        
+
         //Initial case (should be no \n preceding the entry)
         String line=reader.readLine();
         maze_pattern+=line;
@@ -49,5 +49,5 @@ public class MazeConvertor {
 
         return maze;
     }
- }
+}
 
