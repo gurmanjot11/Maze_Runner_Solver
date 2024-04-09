@@ -24,7 +24,7 @@ public class Maze {
 
         while ((line = reader.readLine()) != null) {
             List<SQUARE> nextLine= new ArrayList<>();
-            for (int i=0; i<line.length()-1; i++){
+            for (int i=0; i<line.length(); i++){
                 Character c = line.charAt(i);
                 SQUARE s= SQUARE.valueOfSquare(c);
                 nextLine.add(s);
@@ -59,12 +59,13 @@ public class Maze {
         return square.equals(SQUARE.OPEN);
     }
     private SQUARE getSquare(Coordinates coords){
+        Integer x = coords.getX();
+        Integer y = coords.getY();
         try{
-            Integer x = coords.getX();
-            Integer y = coords.getY();
             return maze.get(y).get(x);
         }
         catch (IndexOutOfBoundsException IOOBE){
+            logger.error("x: "+x+", y: "+y);
             logger.error("*Maze has no square at requested coordinates*");
         }
         System.exit(1);
@@ -76,10 +77,17 @@ public class Maze {
 
     public void printMaze(){
         for (int i=0; i<maze.size();i++){
-            for (int j=0; i<getWidth();j++){
-                System.out.print(getSquare(new Coordinates(j,i)));
+            for (int j=0; j<getWidth();j++){
+                System.out.print(" "+getSquare(new Coordinates(j,i)));
             }
             System.out.print("\n");
         }
+    }
+
+    public Coordinates getWestEntry(){
+        return this.west_entry;
+    }
+    public Coordinates getEastEntry(){
+        return this.east_entry;
     }
 }
