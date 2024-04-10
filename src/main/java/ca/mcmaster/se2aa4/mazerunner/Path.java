@@ -1,8 +1,12 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class Path {
     String path_raw;
-  
+    private static final Logger logger = LogManager.getLogger();
+
     public Path(String path){
         this.path_raw=path;
     }  
@@ -39,6 +43,108 @@ public class Path {
         } 
 
         return f_path;
+
+    }
+    /**Verifies only valid characters are passed in the path */
+    private boolean ensureCharactersValid(){
+        for (int i=0; i<path_raw.length();i++){
+            if (path_raw.charAt(i)=='R' | path_raw.charAt(i)=='F' | path_raw.charAt(i)=='L'| path_raw.charAt(i)==' '){
+                continue;
+            }
+            else{
+                try {
+                    Integer.parseInt(String.valueOf(path_raw.charAt(i)));
+                }
+                catch(NumberFormatException nfe){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public Path defactorPath(){
+        //assume valid chars
+        if (!ensureCharactersValid()){
+            logger.error("/!\\ Invalid path given /!\\");
+            logger.error("/!\\ Ensure all capitals and only R,F,L /!\\");
+            logger.error("/!\\ Terminating Program /!\\");
+            System.exit(1);
+        }
+        String path_defactored="";
+        // cases (assuming valid input: factored path: 3F4R2F -> [3F,4R,2F], canonical: FFFRFFF
+        //Case canonical path passed to validate, will return a spaceless path which can be analyzed
+        if (path_raw.charAt(0) == 'F' | path_raw.charAt(0) == 'R' | path_raw.charAt(0) == 'L'){
+            for (int i=0; i<path_raw.length();i++){
+                if (!(path_raw.charAt(i) == 'F' | path_raw.charAt(i) == 'R' | path_raw.charAt(i) == 'L')){
+                    logger.error("/!\\ Invalid path given /!\\");
+                    logger.error("/!\\ Ensure path is fully factorized or canonical w/o spaces /!\\");
+                    logger.error("/!\\ Terminating Program /!\\");
+                    System.exit(1);
+                }
+            }
+            return new Path(this.path_raw);
+        }
+        //Case factorized path provided, will split at each different instruction and then create corresponding spaceless canonical path
+        else{
+            String[] factors = path_raw.split("(?=\\d)(?<!\\d)"); //splits after every int_str pattern
+            for (int i=0; i<factors.length;i++){
+                try{
+                    Integer.parseInt(factors[i].substring(0,factors[i].length()-1));
+                }
+                catch(NumberFormatException nfe){
+                    logger.error("/!\\ Invalid path given /!\\");
+                    logger.error("/!\\ Ensure path is fully formatted as canonical or factorized w/o spaces /!\\");
+                    logger.error("/!\\ Terminating Program /!\\");
+                    System.exit(1);
+                }
+                int fac=Integer.parseInt(factors[i].substring(0,factors[i].length()-1));
+                char direction= (factors[i].charAt(factors[i].length()-1));
+                for (int j=0; j<fac;j++){
+                    path_defactored+=direction;
+                }
+            }
+            path_raw=path_defactored;
+            return new Path(this.path_raw);
+        }
+    }
+    public int getPathLength(){
+        return (this.path_raw).length();
+    }
+    public char getStepAt(int i){
+        return path_raw.charAt(i);
+    }
+    public boolean verifyPath(Maze maze){
+        logger.info("Verifying path from western entry...");
+        Coordinates west_entry=maze.getWestEntry();
+        Coordinates east_entry=maze.getEastEntry();
+        Coordinates pos=west_entry;
+        DIRECTION direct= DIRECTION.EAST;
+        for (int i=0; i<this.getPathLength();i++){
+            char move=this.getStepAt(i);
+            switch(move){
+                case 'F' ->{
+                    pos.move(direct);
+                }
+                case 'L' ->{
+                    direct=direct.rotateLeft();
+                }
+                case 'R' ->{
+                    direct=direct.rotateRight();
+                }
+                default -> {
+                    return false;
+                }
+            }
+            if(!maze.isOpen(pos)){
+                return false;
+            }
+        }
+        if (pos.coordEquals(east_entry)){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 
