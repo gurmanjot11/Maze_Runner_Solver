@@ -19,7 +19,6 @@ public class Maze {
 
         logger.info("Beginning conversion of maze file to a valid maze");
         BufferedReader reader = new BufferedReader(new FileReader(filepath));
-        int line_num=0;
         String line;
 
         while ((line = reader.readLine()) != null) {
@@ -30,7 +29,6 @@ public class Maze {
                 nextLine.add(s);
             }
             maze.add(nextLine);
-            line_num++;
         }
 
         this.east_entry=findEastEntry();
@@ -55,21 +53,18 @@ public class Maze {
         throw new IllegalArgumentException("*No opening on the western end*");
     }
     public Boolean isOpen(Coordinates coords){
-        SQUARE square = getSquare(coords);
-        return square.equals(SQUARE.OPEN);
+        try{
+            SQUARE square = getSquare(coords);
+            return square.equals(SQUARE.OPEN);
+        }
+        catch(IndexOutOfBoundsException IOOBE){
+            return false;
+        }
     }
     private SQUARE getSquare(Coordinates coords){
         Integer x = coords.getX();
         Integer y = coords.getY();
-        try{
-            return maze.get(y).get(x);
-        }
-        catch (IndexOutOfBoundsException IOOBE){
-            logger.error("x: "+x+", y: "+y);
-            logger.error("*Maze has no square at requested coordinates*");
-        }
-        System.exit(1);
-        return null;
+        return maze.get(y).get(x);
     }
     private Integer getWidth(){
         return this.maze.get(0).size();

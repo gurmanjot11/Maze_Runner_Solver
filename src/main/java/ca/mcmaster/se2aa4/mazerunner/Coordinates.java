@@ -7,13 +7,13 @@ public class Coordinates {
         this.x_coord=x;
         this.y_coord=y;
     }
-    public void move(DIRECTION direction){
+    public Coordinates move(DIRECTION direction){
         switch (direction){
             case NORTH -> {
-                this.y_coord++;
+                this.y_coord--;
             }
             case SOUTH -> {
-                this.y_coord--;
+                this.y_coord++;
             }
             case EAST -> {
                 this.x_coord++;
@@ -22,6 +22,36 @@ public class Coordinates {
                 this.x_coord--;
             }
         }
+        return this;
+    }
+
+    public Coordinates preMoveCheck(DIRECTION direction){
+        Integer x=this.getX();
+        Integer y=this.getY();
+        switch (direction){
+            case NORTH -> {
+                y--;
+            }
+            case SOUTH -> {
+                y++;
+            }
+            case EAST -> {
+                x++;
+            }
+            case WEST -> {
+                x--;
+            }
+        }
+        return new Coordinates(x,y);
+    }
+
+    public boolean coordEquals(Coordinates c){
+        int c_x= c.getX();
+        int c_y= c.getY();
+        if (this.x_coord==c_x & this.y_coord==c_y){
+            return true;
+        }
+        return false;
     }
     public Integer getX(){
         return this.x_coord;

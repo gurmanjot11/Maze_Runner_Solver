@@ -162,10 +162,13 @@ public class Runner {
     public Path solveMaze(){
         String path="";
         startSearch();
+        int num=0;
         while (!(position[0]==east_entry[0] & position[1]==east_entry[1])) {
             path+=move();
+            num++;
         }
         logger.info("Final position: [" + this.position[0]+"," +this.position[1]+"]");
+        System.out.print(num);
         return new Path(path);
     }
 }

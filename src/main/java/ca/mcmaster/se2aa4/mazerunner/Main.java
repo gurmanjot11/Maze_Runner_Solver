@@ -38,7 +38,6 @@ public class Main {
 
         String  maze_filename= cmd.getOptionValue("i");
         logger.info("**** Received input maze file "+ maze_filename);
-        //logger.trace(new Configuration(maze_filename));
 
         return new Congifuration(maze_filename);
     }
@@ -46,13 +45,11 @@ public class Main {
     public static void main(String[] args) {
         try{
             Congifuration config = configure(args);
-            MazeConvertor maze_convertor = new MazeConvertor(config.maze_filepath);
             try {
-                Runner runner = new Runner(maze_convertor.convertToArray());
-                Path path = runner.solveMaze();
+                Maze maze= new Maze(config.maze_filepath);
+                MazeSolver maze_solver = new RightHandRunner();
+                Path path = maze_solver.solveMaze(maze);
                 System.out.println("Path: "+ path.getFactorizedPath());
-                Maze m=new Maze(config.maze_filepath);
-                m.printMaze();
             } catch (IOException ioe) {
                 logger.error("/!\\ Error Reading File /!\\");
                 logger.error("/!\\ Terminating Program /!\\");
