@@ -2,12 +2,12 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class RightHandRunner implements MazeSolver{
     Coordinates position;
-    DIRECTION direction= DIRECTION.EAST;
+    DIRECTION direction= DIRECTION.WEST;
     @Override
     public Path solveMaze(Maze maze) {
-        position=maze.getWestEntry();
+        position=maze.getEastEntry();
         String path="";
-        Coordinates target = maze.getEastEntry();
+        Coordinates target = maze.getWestEntry();
         while (!(position.coordEquals(target))){
             path+=move(maze);
         }

@@ -114,10 +114,15 @@ public class Path {
         return path_raw.charAt(i);
     }
     public boolean verifyPath(Maze maze){
+        boolean l_valid=verifyLeftPath(maze);
+        boolean r_valid=verifyRightPath(maze);
+        return (l_valid|r_valid);
+    }
+    private boolean verifyLeftPath(Maze maze){
         logger.info("Verifying path from western entry...");
         Coordinates west_entry=maze.getWestEntry();
         Coordinates east_entry=maze.getEastEntry();
-        Coordinates pos=west_entry;
+        Coordinates pos=new Coordinates(west_entry.getX(), west_entry.getY());
         DIRECTION direct= DIRECTION.EAST;
         for (int i=0; i<this.getPathLength();i++){
             char move=this.getStepAt(i);
@@ -145,7 +150,38 @@ public class Path {
         else{
             return false;
         }
-
     }
-
+    private boolean verifyRightPath(Maze maze){
+        logger.info("Verifying path from eastern entry...");
+        Coordinates west_entry=maze.getWestEntry();
+        Coordinates east_entry=maze.getEastEntry();
+        Coordinates pos= new Coordinates(east_entry.getX(),east_entry.getY());
+        DIRECTION direct= DIRECTION.WEST;
+        for (int i=0; i<this.getPathLength();i++){
+            char move=this.getStepAt(i);
+            switch(move){
+                case 'F' ->{
+                    pos.move(direct);
+                }
+                case 'L' ->{
+                    direct=direct.rotateLeft();
+                }
+                case 'R' ->{
+                    direct=direct.rotateRight();
+                }
+                default -> {
+                    return false;
+                }
+            }
+            if(!maze.isOpen(pos)){
+                return false;
+            }
+        }
+        if (pos.coordEquals(west_entry)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
