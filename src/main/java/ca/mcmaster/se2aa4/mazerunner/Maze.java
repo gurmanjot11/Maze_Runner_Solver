@@ -66,8 +66,11 @@ public class Maze {
         Integer y = coords.getY();
         return maze.get(y).get(x);
     }
-    private Integer getWidth(){
+    public Integer getWidth(){
         return this.maze.get(0).size();
+    }
+    public Integer getHeight(){
+        return this.maze.size();
     }
 
     public void printMaze(){

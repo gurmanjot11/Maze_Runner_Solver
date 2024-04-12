@@ -1,8 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +60,28 @@ public class Main {
                     }
                 }
                 else{
-                    MazeSolver maze_solver = new RightHandRunner();
+//                    Graph<Coordinates> g = new AdjacencyList<>();
+//                    Vertex<Coordinates> v1 = new CoordinatesVertex(new Coordinates(1,2));
+//                    Vertex<Coordinates> v2 = new CoordinatesVertex(new Coordinates(3,2));
+//                    Vertex<Coordinates> v3 = new CoordinatesVertex(new Coordinates(5,5));
+//                    Vertex<Coordinates> v4 = new CoordinatesVertex(new Coordinates(5,5));
+//
+//                    g.addEdge(v1,v2);
+//                    g.addEdge(v3,v2);
+//                    g.addEdge(v1,v3);
+//
+//                    System.out.println(g.checkVertex(v3));
+//                    System.out.println(g.checkVertex(v1));
+//                    System.out.println(g.checkEdge(v2,v1));
+//                    System.out.println(g.checkEdge(v2,v3));
+//                    System.out.println(g.checkVertex(v4));
+//
+//                    g.printGraph();
+//                    g.removeVertex(v2);
+//                    g.printGraph();
+
+                    //MazeSolver maze_solver = new RightHandRunner();
+                    MazeSolver maze_solver = new GraphMazeRunner();
                     Path path = maze_solver.solveMaze(maze);
                     System.out.println("Path: "+ path.getFactorizedPath());
                 }
