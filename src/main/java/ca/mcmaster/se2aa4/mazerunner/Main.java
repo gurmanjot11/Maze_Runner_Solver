@@ -71,8 +71,34 @@ public class Main {
                         System.exit(1);
                     }
                     else{
+                        String baseline1 = config.baseline.toLowerCase();
+                        String method1 = config.method.toLowerCase();
+
+                        MazeSolver baseline_solver;
+                        if (baseline1.equals("righthand")){
+                            baseline_solver = new RightHandRunner();
+                        } else if (baseline1.equals("bfs")) {
+                            baseline_solver= new GraphMazeRunner();
+                        }
+                        else {
+                            baseline_solver = new GraphMazeRunner();
+                            logger.error("/!\\ Invalid CLI input for 'baseline' /!\\");
+                            System.exit(1);
+                        }
+
+                        MazeSolver method_solver;
+                        if (method1.equals("righthand")){
+                            method_solver = new RightHandRunner();
+                        } else if (method1.equals("bfs")) {
+                            method_solver= new GraphMazeRunner();
+                        }
+                        else {
+                            method_solver = new GraphMazeRunner();
+                            logger.error("/!\\ Invalid CLI input for 'method' /!\\");
+                            System.exit(1);
+                        }
                         Benchmarker b = new Benchmarker();
-                        b.runBenchmark(config.maze_filepath, config.method, config.baseline);
+                        b.runBenchmark(config.maze_filepath, method_solver, baseline_solver);
                     }
                 }
                 else{

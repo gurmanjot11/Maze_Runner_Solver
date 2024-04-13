@@ -7,33 +7,8 @@ import java.io.IOException;
 
 public class Benchmarker {
     private static final Logger logger = LogManager.getLogger();
-    public void runBenchmark(String maze_path, String method, String baseline) throws IOException {
-        String baseline1 = baseline.toLowerCase();
-        String method1 = method.toLowerCase();
+    public void runBenchmark(String maze_path, MazeSolver method_solver, MazeSolver baseline_solver) throws IOException {
 
-        MazeSolver baseline_solver;
-        if (baseline1.equals("righthand")){
-            baseline_solver = new RightHandRunner();
-        } else if (baseline1.equals("bfs")) {
-            baseline_solver= new GraphMazeRunner();
-        }
-        else {
-            baseline_solver = new GraphMazeRunner();
-            logger.error("/!\\ Invalid CLI input for 'baseline' /!\\");
-            System.exit(1);
-        }
-
-        MazeSolver method_solver;
-        if (method1.equals("righthand")){
-            method_solver = new RightHandRunner();
-        } else if (method1.equals("bfs")) {
-            method_solver= new GraphMazeRunner();
-        }
-        else {
-            method_solver = new GraphMazeRunner();
-            logger.error("/!\\ Invalid CLI input for 'method' /!\\");
-            System.exit(1);
-        }
         long maze_load_start = System.currentTimeMillis();
         Maze maze= new Maze(maze_path);
         long maze_load_end = System.currentTimeMillis();
@@ -53,8 +28,8 @@ public class Benchmarker {
         Double speedup = baseline_length/method_length;
 
         System.out.printf("Time spent loading maze from file (ms): %.2f\n",load_time);
-        System.out.printf("Time spent using method: %s algorithm (ms): %.2f\n",method1,method_time);
-        System.out.printf("Time spent using baseline: %s algorithm (ms): %.2f\n",baseline1,baseline_time);
+        System.out.printf("Time spent using method: method algorithm (ms): %.2f\n",method_time);
+        System.out.printf("Time spent using baseline: baseline algorithm (ms): %.2f\n",baseline_time);
         System.out.printf("Speedup in terms of path length - baseline/method: %.2f\n",speedup);
     }
 }
