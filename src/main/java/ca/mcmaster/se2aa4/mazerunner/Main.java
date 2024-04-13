@@ -67,61 +67,12 @@ public class Main {
                 }
                 else if (config.baseline!=null) {
                     if (config.method==null){
-                        logger.error("/!\\ An error parsing the CLI inputs has occured /!\\");
+                        logger.error("/!\\ An error with CLI inputs entries has occured /!\\");
                         System.exit(1);
                     }
                     else{
-                        String baseline = config.baseline.toLowerCase();
-                        String method = config.method.toLowerCase();
-
-                        MazeSolver baseline_solver;
-                        if (baseline.equals("righthand")){
-                            baseline_solver = new RightHandRunner();
-                        } else if (baseline.equals("bfs")) {
-                            baseline_solver= new GraphMazeRunner();
-                        }
-                        else {
-                            baseline_solver = new GraphMazeRunner();
-                            logger.error("/!\\ Invalid CLI input for 'baseline' /!\\");
-                            System.exit(1);
-                        }
-
-                        MazeSolver method_solver;
-                        if (method.equals("righthand")){
-                            method_solver = new RightHandRunner();
-                        } else if (method.equals("bfs")) {
-                            method_solver= new GraphMazeRunner();
-                        }
-                        else {
-                            method_solver = new GraphMazeRunner();
-                            logger.error("/!\\ Invalid CLI input for 'method' /!\\");
-                            System.exit(1);
-                        }
-
-                        //test both strategies
-
-                        long maze_load_start = System.currentTimeMillis();
-                        Maze maze= new Maze(config.maze_filepath);
-                        long maze_load_end = System.currentTimeMillis();
-                        Path method_path = method_solver.solveMaze(maze);
-                        long method_solver_time = System.currentTimeMillis();
-                        Path baseline_path = baseline_solver.solveMaze(maze);
-                        long baseline_solver_time = System.currentTimeMillis();
-
-
-                        Double load_time = (double) (maze_load_end - maze_load_start);
-                        Double method_time = (double)(method_solver_time - maze_load_end);
-                        Double baseline_time = (double)(baseline_solver_time - method_solver_time);
-
-                        Double method_length = Double.valueOf(method_path.getPathLength());
-                        Double baseline_length = Double.valueOf(baseline_path.getPathLength());
-
-                        Double speedup = baseline_length/method_length;
-
-                        System.out.printf("Time spent loading maze from file (ms): %.2f\n",load_time);
-                        System.out.printf("Time spent using method: %s algorithm (ms): %.2f\n",method,method_time);
-                        System.out.printf("Time spent using baseline: %s algorithm (ms): %.2f\n",baseline,baseline_time);
-                        System.out.printf("Speedup in terms of path length - baseline/method: %.2f\n",speedup);
+                        Benchmarker b = new Benchmarker();
+                        b.runBenchmark(config.maze_filepath, config.method, config.baseline);
                     }
                 }
                 else{
