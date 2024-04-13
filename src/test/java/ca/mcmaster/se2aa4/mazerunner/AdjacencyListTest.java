@@ -48,7 +48,9 @@ public class AdjacencyListTest {
         Map<Vertex<Coordinates>, Vertex<Coordinates>> index = g.breadthFirstSearch(new CoordinatesVertex(c1),new CoordinatesVertex(c3));
         CoordinatesVertex cv1 = (CoordinatesVertex) index.get(new CoordinatesVertex(c3));
         boolean b1 = (cv1.getObject()).coordEquals(c2);
+        boolean b2 = cv1.equals(new CoordinatesVertex(c2));
         assertTrue(b1);
+        assertTrue(b2);
     }
 
 }
