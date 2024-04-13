@@ -59,4 +59,11 @@ public class Coordinates {
     public Integer getY(){
         return this.y_coord;
     }
+    @Override
+    public String toString() {
+        Integer x = this.x_coord;
+        Integer y = this.y_coord;
+        String s = "("+x+","+y+")";
+        return s;
+    }
 }
