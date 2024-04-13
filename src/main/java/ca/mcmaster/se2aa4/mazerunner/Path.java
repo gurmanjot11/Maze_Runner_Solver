@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Path {
-    String path_raw;
+    private String path_raw;
     private static final Logger logger = LogManager.getLogger();
 
     public Path(String path){
