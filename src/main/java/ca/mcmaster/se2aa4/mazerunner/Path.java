@@ -9,8 +9,11 @@ public class Path {
 
     public Path(String path){
         this.path_raw=path;
-    }  
+    }
     public String getCanonicalPath(){
+        if (path_raw.length()==0){
+            return "";
+        }
         String c_path="";
         for (int i=0; i<path_raw.length()-1;i++){
             c_path+=path_raw.charAt(i);
@@ -23,6 +26,9 @@ public class Path {
 
     }
     public String getFactorizedPath(){
+        if (path_raw.length()==0){
+            return "";
+        }
         String f_path="";
         String c_path="";
         for (int i=0; i<path_raw.length()-1;i++){
@@ -107,10 +113,10 @@ public class Path {
             return new Path(this.path_raw);
         }
     }
-    public int getPathLength(){
+    public Integer getPathLength(){
         return (this.path_raw).length();
     }
-    public char getStepAt(int i){
+    private char getStepAt(int i){
         return path_raw.charAt(i);
     }
     public boolean verifyPath(Maze maze){
@@ -183,5 +189,10 @@ public class Path {
         else{
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return path_raw;
     }
 }

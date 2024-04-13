@@ -11,8 +11,7 @@ public class GraphMazeRunner implements MazeSolver{
 
     @Override
     public Path solveMaze(Maze maze) {
-        Graph g = convertToUndirectedGraph(maze);
-        //g.printGraph();
+        Graph g = convertToUndirectedAdjacencyList(maze);
         Map<CoordinatesVertex,CoordinatesVertex> index;
         try{
             index = g.breadthFirstSearch(new CoordinatesVertex(maze.getWestEntry()), new CoordinatesVertex(maze.getEastEntry()));
@@ -26,7 +25,7 @@ public class GraphMazeRunner implements MazeSolver{
         Path p = extractPath(index,maze.getWestEntry(),maze.getEastEntry());
         return p;
     }
-    private Graph convertToUndirectedGraph(Maze maze){
+    private Graph convertToUndirectedAdjacencyList(Maze maze){
         Graph<Coordinates> g= new AdjacencyList<>();
         for (int y=0; y<maze.getHeight(); y++){
             for (int x=0; x< maze.getWidth(); x++){

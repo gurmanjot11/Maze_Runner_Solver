@@ -83,9 +83,9 @@ public class Maze {
     }
 
     public Coordinates getWestEntry(){
-        return this.west_entry;
+        return new Coordinates(this.west_entry.getX(),this.west_entry.getY());
     }
     public Coordinates getEastEntry(){
-        return this.east_entry;
+        return new Coordinates(this.east_entry.getX(), this.east_entry.getY());
     }
 }
