@@ -1,12 +1,21 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.IOException;
 
+/**
+ * Performs all benchmarking operations. For our case, we only have one test so just a simple run
+ * method is used for this version
+ */
+
 public class Benchmarker {
-    private static final Logger logger = LogManager.getLogger();
+
+    /**
+     * Runs the benchmarking process to get times and speeduo, which are then printed
+     * @param baseline_solver Passed maze solver to use as baseline w/ -baseline
+     * @param method_solver Passed maze solver to use as the main method w/ -method
+     * @param maze_path passed filepath, so a maze can be instantiated here and time can be measured
+     */
+
     public void runBenchmark(String maze_path, MazeSolver method_solver, MazeSolver baseline_solver) throws IOException {
 
         long maze_load_start = System.currentTimeMillis();

@@ -1,5 +1,10 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
+/**
+ * Implementation of MazeSolver which uses the right hand algorithm.
+ * An old class that has not changed so I will not comment it, but still works
+ */
+
 public class RightHandRunner implements MazeSolver{
     Coordinates position;
     DIRECTION direction= DIRECTION.WEST;
@@ -15,19 +20,14 @@ public class RightHandRunner implements MazeSolver{
     }
 
     private boolean isLeftValid(Maze maze){
-        //true if square 1 to the left is " ", else false
-        //modulo was yielding incorrect result for boundary cases like current_direction=0
         DIRECTION relative_left_direction = (this.direction.rotateLeft());
         return checkSquare(maze, relative_left_direction);
     }
     private boolean isRightValid(Maze maze){
-        //true if square 1 to the right is " ", else false
-        //modulo would have worked here but I wanted to keep logic consistent
         DIRECTION relative_right_direction = (direction.rotateRight());
         return checkSquare(maze, relative_right_direction);
     }
     private boolean isForwardValid(Maze maze){
-        //true if square 1 fwd left is " ", else false
         return checkSquare(maze, direction);
     }
 
@@ -48,7 +48,6 @@ public class RightHandRunner implements MazeSolver{
     }
 
     private String move(Maze maze){
-        //method will make 1 move to get closer to solving the maze
         if (isRightValid(maze)) {
             rotateRunnerRight();
             moveForward();

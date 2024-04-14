@@ -11,6 +11,13 @@ import org.apache.commons.cli.*;
 //TEST COMMIT FOR NEW REPO
 public class Main {
     private static final Logger logger = LogManager.getLogger();
+    /**
+     *  Creates a record that stores all of the CLI inputs so they can be used in the actual code
+     * @param baseline parsed baseline method entry
+     * @param method parsed method  entry
+     * @param maze_filepath parsed filepath to the input maze
+     * @param test_path parsed path to test validity of according to some maze
+     */
 
     private record Congifuration (String maze_filepath, String test_path, String method,String baseline){
         Congifuration{
@@ -19,6 +26,10 @@ public class Main {
             }
         }
     }
+    /**
+     * creates the configuration specified earlier by reading the CLI and parsing all of the values
+     * @return a configuration with all parsed values
+     */
 
     private static Congifuration configure (String[] args) throws ParseException {
         Options options = new Options();
@@ -48,7 +59,9 @@ public class Main {
 
         return new Congifuration(maze_filename,test_path,method,baseline);
     }
-
+    /**
+     *Main control flow that decides actions based on which CLI parameters were input
+     */
     public static void main(String[] args) {
         try{
             Congifuration config = configure(args);

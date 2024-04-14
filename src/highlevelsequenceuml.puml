@@ -1,0 +1,26 @@
+@startuml
+title "Sequence Diagram for Graph Based Path Computation"
+
+actor Terminal as terminal
+participant Main as main
+participant Maze as maze
+participant MazeSolver as maze_solver
+participant GraphMazeRunner as gmr
+participant Path as path 
+participant Graph as graph
+
+group Path Computation: Graph Method Workflow
+    'Explorer -> FileInterpreter : f = new JSONReader(s,dc)' 
+    terminal -> main: configure(args)
+    main -> maze: Maze maze = new Maze(config.filepath)
+    main <- maze
+    main -> maze_solver: MazeSolver maze_solver
+    maze_solver -> gmr : '=' new GraphMazeRunner
+    main <- gmr
+    main -> graph: maze_solver.solveMaze(maze)
+    path <- graph: breadthFirstSearch(start,end)
+    main <- path: return path
+    main -> main: print(path)
+    terminal <- main: program terminates
+end
+@enduml
