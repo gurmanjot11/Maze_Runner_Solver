@@ -3,6 +3,11 @@ package ca.mcmaster.se2aa4.mazerunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Abstraction to store paths and perform needed print operations on them
+ * An old class that has not changed, so I will not comment it, but still works
+ */
+
 public class Path {
     private String path_raw;
     private static final Logger logger = LogManager.getLogger();

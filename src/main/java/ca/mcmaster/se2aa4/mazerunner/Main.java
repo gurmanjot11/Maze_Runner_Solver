@@ -11,6 +11,13 @@ import org.apache.commons.cli.*;
 //TEST COMMIT FOR NEW REPO
 public class Main {
     private static final Logger logger = LogManager.getLogger();
+    /**
+     *  Creates a record that stores all of the CLI inputs so they can be used in the actual code
+     * @param baseline parsed baseline method entry
+     * @param method parsed method  entry
+     * @param maze_filepath parsed filepath to the input maze
+     * @param test_path parsed path to test validity of according to some maze
+     */
 
     private record Congifuration (String maze_filepath, String test_path, String method,String baseline){
         Congifuration{
@@ -19,6 +26,10 @@ public class Main {
             }
         }
     }
+    /**
+     * creates the configuration specified earlier by reading the CLI and parsing all of the values
+     * @return a configuration with all parsed values
+     */
 
     private static Congifuration configure (String[] args) throws ParseException {
         Options options = new Options();
@@ -48,7 +59,9 @@ public class Main {
 
         return new Congifuration(maze_filename,test_path,method,baseline);
     }
-
+    /**
+     *Main control flow that decides actions based on which CLI parameters were input
+     */
     public static void main(String[] args) {
         try{
             Congifuration config = configure(args);
@@ -67,17 +80,17 @@ public class Main {
                 }
                 else if (config.baseline!=null) {
                     if (config.method==null){
-                        logger.error("/!\\ An error parsing the CLI inputs has occured /!\\");
+                        logger.error("/!\\ An error with CLI inputs entries has occured /!\\");
                         System.exit(1);
                     }
                     else{
-                        String baseline = config.baseline.toLowerCase();
-                        String method = config.method.toLowerCase();
+                        String baseline1 = config.baseline.toLowerCase();
+                        String method1 = config.method.toLowerCase();
 
                         MazeSolver baseline_solver;
-                        if (baseline.equals("righthand")){
+                        if (baseline1.equals("righthand")){
                             baseline_solver = new RightHandRunner();
-                        } else if (baseline.equals("bfs")) {
+                        } else if (baseline1.equals("bfs")) {
                             baseline_solver= new GraphMazeRunner();
                         }
                         else {
@@ -87,9 +100,9 @@ public class Main {
                         }
 
                         MazeSolver method_solver;
-                        if (method.equals("righthand")){
+                        if (method1.equals("righthand")){
                             method_solver = new RightHandRunner();
-                        } else if (method.equals("bfs")) {
+                        } else if (method1.equals("bfs")) {
                             method_solver= new GraphMazeRunner();
                         }
                         else {
@@ -97,31 +110,8 @@ public class Main {
                             logger.error("/!\\ Invalid CLI input for 'method' /!\\");
                             System.exit(1);
                         }
-
-                        //test both strategies
-
-                        long maze_load_start = System.currentTimeMillis();
-                        Maze maze= new Maze(config.maze_filepath);
-                        long maze_load_end = System.currentTimeMillis();
-                        Path method_path = method_solver.solveMaze(maze);
-                        long method_solver_time = System.currentTimeMillis();
-                        Path baseline_path = baseline_solver.solveMaze(maze);
-                        long baseline_solver_time = System.currentTimeMillis();
-
-
-                        Double load_time = (double) (maze_load_end - maze_load_start);
-                        Double method_time = (double)(method_solver_time - maze_load_end);
-                        Double baseline_time = (double)(baseline_solver_time - method_solver_time);
-
-                        Double method_length = Double.valueOf(method_path.getPathLength());
-                        Double baseline_length = Double.valueOf(baseline_path.getPathLength());
-
-                        Double speedup = baseline_length/method_length;
-
-                        System.out.printf("Time spent loading maze from file (ms): %.2f\n",load_time);
-                        System.out.printf("Time spent using method: %s algorithm (ms): %.2f\n",method,method_time);
-                        System.out.printf("Time spent using baseline: %s algorithm (ms): %.2f\n",baseline,baseline_time);
-                        System.out.printf("Speedup in terms of path length - baseline/method: %.2f\n",speedup);
+                        Benchmarker b = new Benchmarker();
+                        b.runBenchmark(config.maze_filepath, method_solver, baseline_solver);
                     }
                 }
                 else{

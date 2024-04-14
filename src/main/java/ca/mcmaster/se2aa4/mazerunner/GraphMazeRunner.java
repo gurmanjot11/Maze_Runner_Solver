@@ -6,6 +6,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Maze solver which uses graph algorithm. For public methods, refer to MazeSolver interface.
+ */
+
 public class GraphMazeRunner implements MazeSolver{
     private static final Logger logger = LogManager.getLogger();
 
@@ -25,6 +29,11 @@ public class GraphMazeRunner implements MazeSolver{
         Path p = extractPath(index,maze.getWestEntry(),maze.getEastEntry());
         return p;
     }
+    /**
+     *  Converts a given maze into an undirected adjacency list
+     * @param maze input maze to turn into a graph
+     * @return returns a graph (i.e. adjacency list) object encoding  of the maze
+     */
     private Graph convertToUndirectedAdjacencyList(Maze maze){
         Graph<Coordinates> g= new AdjacencyList<>();
         for (int y=0; y<maze.getHeight(); y++){
@@ -46,6 +55,14 @@ public class GraphMazeRunner implements MazeSolver{
         }
         return g;
     }
+    /**
+     * Given the index from the BFS, it will extract previous vertices to create the full path
+     * from start vertex to end
+     * @param index Map that contains each vertex's previous vertex
+     * @param end coordinates of the starting vertex
+     * @param start coordinates of the ending vertex
+     * @return returns corresponding path to the input index
+     */
     private Path extractPath(Map<CoordinatesVertex,CoordinatesVertex> index,Coordinates start, Coordinates end){
         Stack<Character> instructions = new Stack<>();
         DIRECTION direction = DIRECTION.WEST;
@@ -81,6 +98,13 @@ public class GraphMazeRunner implements MazeSolver{
         }
         return new Path(path);
     }
+    /**
+     * based on a given previous vertex, decides which steps had to be taken to reach that new vertex
+     * @param curr_coord coordinates of current vertex
+     * @param prev_coord coordinates of previous vertex from index
+     * @param curr_direction current direction the solver is facing
+     * @return returns corresponding movement taken
+     */
     private String determineSequence(Coordinates prev_coord, Coordinates curr_coord, DIRECTION curr_direction){
         Coordinates fwd_coord = curr_coord.preMoveCheck(curr_direction);
         Coordinates left_coord = curr_coord.preMoveCheck(curr_direction.rotateLeft());

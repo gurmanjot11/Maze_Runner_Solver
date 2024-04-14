@@ -1,6 +1,17 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.util.*;
+/**
+ * Implements graph, so for method explanations refer to that.
+ *
+ * Simulates a graph using an adjacency list (vertex that maps to a linked list of its connected vertices)
+ * i.e.
+ * v1: v2->v3
+ * v2: null
+ * v3: v2
+ * :
+ * vn: v1 -> v2 -> v3
+ */
 
 public class AdjacencyList<T> implements Graph<T> {
     private Map<Vertex<T>, LinkedList<Vertex<T>>> edges;
@@ -160,6 +171,11 @@ public class AdjacencyList<T> implements Graph<T> {
         }
         return prev_vertex;
     }
+    /**
+     * takes a vertex key and returns all vertices which is shares an edge with
+     * @param v vertex object as key
+     * @return linked list of all connected vertices
+     */
     private LinkedList<Vertex<T>> getConnectedComponents(Vertex<T> v){
         if (!checkVertex(v)){
             return null;

@@ -1,0 +1,42 @@
+@startuml
+'Class definitions'
+class Main
+class Benchmarker
+class Maze
+class Path
+class GraphMazeRunner
+class AdjacencyList
+class Coordinates
+class CoordinatesVertex
+
+enum SQUARE
+enum DIRECTION
+
+interface MazeSolver
+interface Graph
+
+abstract class Vertex
+
+'Interactions'
+Main o- Benchmarker
+Main o-- Maze
+Main o-- MazeSolver
+Main --- Path
+
+Benchmarker o- Maze
+
+SQUARE --* Maze
+Coordinates <- Maze
+
+MazeSolver <|.. GraphMazeRunner
+GraphMazeRunner o- DIRECTION
+
+GraphMazeRunner *-- Graph
+
+Graph *- Vertex
+Graph <|.. AdjacencyList
+
+Vertex <|-- CoordinatesVertex
+CoordinatesVertex *--Coordinates
+
+@enduml
