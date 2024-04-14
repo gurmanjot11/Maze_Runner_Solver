@@ -1,5 +1,4 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/8jM7fhXE)
-# Assignment A1 - Maze Runner
+# Assignment A3 - Maze Runner Revisited
 
   * **Student**: [GURMANJOT MINHAS](minhag7@mcmaster.ca)
   * **Program**: B. Eng. In Software Engineering
@@ -25,89 +24,109 @@ This program explores a maze, finding a path from an entry point to an exit one.
 - A factorized path squashes together similar instructions (i.e., `FFF` = `3F`, `LL` = `2L`).
 - Spaces are ignored in the instruction sequence (only for readability: `FFLFF` = `FF L FF`)
 - The program takes as input a maze and print the path on the standard output.
-    - For this assignment, the path does not have to be the shortest one.
-- The program can take a path as input and verify if it's a legit one.
+- Give the program the file path to an example maze using the -i or --input flags
+- By default, the program will solve the maze using a graph based shortest path algorithm
+    - To select which method to use, use the -method or --method flags
+    - Currently supported methods:
+        - -method bfs
+        - -method righthand 
+- The program can take a path as input and verify if it's a legit one using the -p flag .
+    - Paths may be canonical or factorized
+- Can also choose to baseline performance of different methods by using the -baseline flag, followed by a supported method
+    - Ensure that when using this, you specify a method for -method AND -baseline. Or else the program will not work!
 
 ## How to run this software?
 
 To build the program, simply package it with Maven:
 
 ```
-mosser@azrael A1-Template % mvn -q clean package 
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ mvn clean package -q 
 ```
 
-### Provided version (starter code)
-
-The starter code assumes the maze file name is the first argument. 
+To run use:
 
 ```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txt
-** Starting Maze Runner
-**** Reading the maze from file ./examples/small.maz.txt
-WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL 
-WALL PASS PASS PASS PASS PASS PASS PASS PASS PASS WALL 
-WALL WALL WALL PASS WALL WALL WALL PASS WALL WALL WALL 
-WALL PASS PASS PASS PASS PASS WALL PASS PASS PASS WALL 
-WALL PASS WALL PASS WALL WALL WALL WALL WALL PASS WALL 
-WALL PASS WALL PASS PASS PASS PASS PASS WALL PASS PASS 
-WALL WALL WALL PASS WALL PASS WALL WALL WALL WALL WALL 
-WALL PASS PASS PASS WALL PASS PASS PASS PASS PASS WALL 
-PASS PASS WALL PASS WALL PASS WALL WALL WALL PASS WALL 
-WALL PASS WALL PASS WALL PASS WALL PASS PASS PASS WALL 
-WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL WALL 
-**** Computing path
-PATH NOT COMPUTED
-** End of MazeRunner
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/straight.maz.txt
 ```
 
-When called on a non-existing file. it prints an error message
 
-```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar ./examples/small.maz.txtd
-** Starting Maze Runner
-**** Reading the maze from file ./examples/small.maz.txtd
-/!\ An error has occured /!\
-**** Computing path
-PATH NOT COMPUTED
-** End of MazeRunner
-```
 
 ### Delivered version
+
+Example: No input file specified
+
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar
+[ERROR] Main /!\ No input file given /!\
+[ERROR] Main /!\ Terminating Program /!\
+```
+
+Example: Input file specified
+
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/straight.maz.txt
+[INFO ] Main **** Received input maze file examples/straight.maz.txt
+[INFO ] Maze Beginning conversion of maze file to a valid maze
+[INFO ] Maze Maze Processed
+Path: 4F
+```
+
+Example: Path Verification
+
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/straight.maz.txt -p FFFF
+[INFO ] Main **** Received input maze file examples/straight.maz.txt
+[INFO ] Maze Beginning conversion of maze file to a valid maze
+[INFO ] Maze Maze Processed
+[INFO ] Path Verifying path from western entry...
+[INFO ] Path Verifying path from eastern entry...
+
+**This path is valid**
+```
+
+Example: Maze Solving Algorithm Specifier 
+
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/small.maz.txt -method righthand
+[INFO ] Main **** Received input maze file examples/small.maz.txt
+[INFO ] Maze Beginning conversion of maze file to a valid maze
+[INFO ] Maze Maze Processed
+Path: 1F 1R 2F 1L 2F 1R 2F 1R 2F 2L 8F 2L 2F 1R 2F 1R 2F 1L 2F 2L 2F 1R 2F 1R 4F 1R 2F 1L 1F 1R 1F
+```
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/small.maz.txt -method bfs
+[INFO ] Main **** Received input maze file examples/small.maz.txt
+[INFO ] Maze Beginning conversion of maze file to a valid maze
+[INFO ] Maze Maze Processed
+Path: 1F 1L 1F 1R 2F 1L 6F 1R 4F 1R 2F 1L 2F 1R 2F 1L 1F
+```
+
+Example: Baseline
+
+```
+gurmanjot11@DESKTOP-IN4GGPF:~/a3-maze-runner-take-two-gurmanjot11$ java -jar target/mazerunner.jar -i examples/small.maz.txt -method bfs -baseline righthand
+[INFO ] Main **** Received input maze file examples/small.maz.txt
+[INFO ] Maze Beginning conversion of maze file to a valid maze
+[INFO ] Maze Maze Processed
+Time spent loading maze from file (ms): 2.00
+Time spent using method: method algorithm (ms): 6.00
+Time spent using baseline: baseline algorithm (ms): 0.00
+Speedup in terms of path length - baseline/method: 1.90
+```
+
+
 
 #### Command line arguments
 
 The delivered program at the end of this assignment should use the following flags:
 
 - `-i MAZE_FILE`: specifies the filename to be used;
-- `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze
+- `-p PATH_SEQUENCE`: activates the path verification mode to validate that PATH_SEQUENCE is correct for the maze;
+- `-method METHOD`: activates path computation mode with the specified METHOD algorithm;
+- `-baseline BASELINE`: activates benchmark mode which compares performance of the specified METHOD and BENCHMARK algorithms;
 
-If you are also delivering the bonus, your program will react to a third flag:
 
-- `-method {tremaux, righthand}`: specifies which path computation method to use. (default is right hand)
+ENJOY!
 
-#### Examples
 
-When no logs are activated, the programs only print the computed path on the standard output.
-
-```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt
-4F
-mosser@azrael A1-Template %
-```
-
-If a given path is correct, the program prints the message `correct path` on the standard output.
-
-```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 4F
-correct path
-mosser@azrael A1-Template %
-```
-
-If a given path is incorrect, the program prints the message `incorrect path` on the standard output.
-
-```
-mosser@azrael A1-Template % java -jar target/mazerunner.jar -i ./examples/straight.maz.txt -p 3F
-inccorrect path
-mosser@azrael A1-Template %
-```
 
